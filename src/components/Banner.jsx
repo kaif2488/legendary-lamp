@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
-import banner from "../image/banner.jpg"
+
 import { Link } from "react-router-dom";
 const Banner = () => {
     const [search, setSearch] = useState();
     const [find, setFind] = useState([]);
     const [word, setWord] = useState("");
     useEffect(() => {
-        setSearch(["a","b","test", "mb"])
+        setSearch(["a", "b", "test", "mb"])
     }, [])
     const findSearch = (e) => {
         setWord(e.target.value)
@@ -28,7 +28,7 @@ const Banner = () => {
         }
     }
     return (
-        <div className="banner d-flex align-items-center" style={{ backgroundImage: `url(${banner})` }}>
+        <div className="banner d-flex align-items-center" style={{ backgroundImage: `url(/img/banner.jpg)` }}>
             <div className="bg-custom">
                 <div className="container">
                     <div className="row">
