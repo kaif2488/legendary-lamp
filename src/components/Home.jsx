@@ -11,10 +11,8 @@ const Home=()=>{
         <React.Fragment>
             <Banner/>
             <FlatList/>
-            <BestFlatList/>
             <Subscribe/>
             <TeamList/>
-            <References/>
         </React.Fragment>
     )
 }
