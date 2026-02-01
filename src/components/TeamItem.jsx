@@ -3,7 +3,7 @@ const TeamItem = () => {
         <div className="col-lg-4">
             <div className="team">
                 <div className="team-img">
-                    <img src="/img/team.jpg" alt="team" />
+                    <img src="/img/team.jpeg" alt="team" />
                 </div>
                 <div className="team-info">
                     <h5 className="team-name">Lorem Ipsum</h5>
