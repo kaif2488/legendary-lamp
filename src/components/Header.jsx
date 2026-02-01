@@ -1,18 +1,24 @@
 import React from "react"
 import {Link} from "react-router-dom"
+import bullzzyLogo from "../assets/logo.jpg";
+
 
 const Header = () => {
     return (
+        
         <div className="header">
             <div className="container">
                 <nav className="navbar navbar-expand-lg navbar-light">
                     <div className="container-fluid">
                         <Link className="navbar-brand" to="/">
                             <div className="d-flex align-items-center">
-                            <i className="fas fa-home"></i>
-                                <span className="ms-2">
-                                    MB
-                           </span>
+                            <img 
+                                src={bullzzyLogo}
+                                alt="Bullzzy Realty Logo"
+                                className="logo-img"
+                                style={{ height: "34px" }}
+                            />
+                            <span className="ms-2 brand-text">BULLZZY REALTY</span>
                             </div>
                         </Link>
                         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
