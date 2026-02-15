@@ -1,32 +1,30 @@
-import { useEffect, useState } from "react"
-
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import propertySearchData, { budgetRanges } from "../data/propertySearchData";
+
 const Banner = () => {
-    const [search, setSearch] = useState();
-    const [find, setFind] = useState([]);
     const [word, setWord] = useState("");
-    useEffect(() => {
-        setSearch(["a", "b", "test", "mb"])
-    }, [])
-    const findSearch = (e) => {
-        setWord(e.target.value)
-        const filteredCountries = search.filter(item => item.indexOf(e.target.value) > -1 ? item : null);
-        e.target.value.length === 0 ? setFind([]) : setFind(filteredCountries);
-    }
-    const findResult = () => {
-        if (find.length === 0 && word.length > 0) {
-            return <div className="find-search">Not Found</div>
-        }
-        if (find.length > 0) {
-            return <div className="find-search">
-                {
-                    find.map(item => {
-                        return <Link key={item} to="#">{item}</Link>
-                    })
-                }
-            </div>
-        }
-    }
+    const [selectedBudget, setSelectedBudget] = useState("all");
+
+    const find = useMemo(() => {
+        const normalizedWord = word.trim().toLowerCase();
+
+        return propertySearchData.filter((item) => {
+            const matchesWord = normalizedWord.length === 0
+                ? true
+                : item.name.toLowerCase().includes(normalizedWord);
+
+            const selectedBudgetOption = budgetRanges.find((range) => range.value === selectedBudget);
+            const matchesBudget = !selectedBudgetOption || selectedBudgetOption.max === null
+                ? true
+                : item.price >= selectedBudgetOption.min && item.price <= selectedBudgetOption.max;
+
+            return matchesWord && matchesBudget;
+        });
+    }, [word, selectedBudget]);
+
+    const hasNoResults = find.length === 0 && (word.trim().length > 0 || selectedBudget !== "all");
+
     return (
         <div className="banner d-flex align-items-center" style={{ backgroundImage: `url(/img/banner.jpg)` }}>
             <div className="bg-custom">
@@ -37,17 +35,46 @@ const Banner = () => {
                                 <h2 className="mt-2 mb-4 banner-title"><strong> BULLZY REALITY</strong> </h2>
                                 <p> CONFIDENCE IN EVERY SQUARE FOOT</p>
                                 <div className="search-area">
-                                    <input value={word} onChange={(e) => findSearch(e)} type="text" className="inp-search" placeholder="Search" />
+                                    <input
+                                        value={word}
+                                        onChange={(e) => setWord(e.target.value)}
+                                        type="text"
+                                        className="inp-search"
+                                        placeholder="Search"
+                                    />
                                     <button className="btn-search m-2">Search All</button>
                                 </div>
-                                {findResult()}
+                                <div className="budget-filter-area">
+                                    <select
+                                        className="budget-select"
+                                        value={selectedBudget}
+                                        onChange={(e) => setSelectedBudget(e.target.value)}
+                                        aria-label="Filter by budget"
+                                    >
+                                        {budgetRanges.map((range) => (
+                                            <option key={range.value} value={range.value}>
+                                                {range.label}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                {(word.trim().length > 0 || selectedBudget !== "all") && (
+                                    <div className="find-search">
+                                        {hasNoResults && <div>Not Found</div>}
+                                        {!hasNoResults && find.map((item) => (
+                                            <Link key={item.id} to="#">
+                                                {item.name} - ${item.price.toLocaleString()}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Banner;
